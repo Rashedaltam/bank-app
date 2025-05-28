@@ -7,7 +7,7 @@ export default function Index() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
@@ -16,7 +16,7 @@ export default function Index() {
   }
 
   if (isAuthenticated) {
-    return <Redirect href="/(protected)/(tabs)/Home" />;
+    return <Redirect href="/(protected)/(tabs)/home/Home" />;
   }
 
   return <Redirect href="/(auth)/Login" />;

@@ -20,9 +20,11 @@ const Login = () => {
     mutationFn: () => login({ username, password }),
     onSuccess: (data) => {
       setIsAuthenticated(true);
-      router.replace("/(protected)/(tabs)/Home");
+      router.replace("/(protected)/(tabs)/home/Home");
       console.log(`Logged in successfully as: ${username}`);
+      console.log("Response Data", data);
     },
+
     onError: (error) => {
       alert(`${error.message} \n\nCould be invalid username or password`);
       console.log(`Login failed: ${error.message}`);
@@ -47,6 +49,7 @@ const Login = () => {
         style={styles.input}
         value={password}
         onChangeText={setPassword}
+        secureTextEntry={true}
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>

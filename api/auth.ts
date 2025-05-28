@@ -8,7 +8,10 @@ const login = async ({
   username: string;
   password: string;
 }) => {
-  const response = await instance.post("/auth/login", { username, password });
+  const response = await instance.post("/mini-project/api/auth/login", {
+    username,
+    password,
+  });
   await storeToken(response.data.token);
   return response;
 };
@@ -22,7 +25,7 @@ const register = async ({
   password: string;
   image: string;
 }) => {
-  const response = await instance.post("/auth/register", {
+  const response = await instance.post("/mini-project/api/auth/register", {
     username,
     password,
     image,

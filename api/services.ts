@@ -53,8 +53,8 @@ const TransferfromMYAcc = async () => {
 };
 
 ////// Get User Info by user ID
-const GetUserInfo = async () => {
-  const responce = await instance.get("/mini-project/api/auth/user/<userId>");
+const GetUserInfo = async (userId: number) => {
+  const responce = await instance.get(`/mini-project/api/auth/user/"${userId}`);
   return responce.data;
 };
 

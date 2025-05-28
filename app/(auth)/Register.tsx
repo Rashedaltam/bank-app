@@ -19,10 +19,11 @@ const Register = () => {
     image: "",
   });
 
-  const { mutate } = useMutation({
+  const { mutate, data } = useMutation({
     mutationFn: () => register(formData),
     onSuccess: () => {
-      router.replace("/(protected)/(tabs)/Home");
+      router.replace("/(protected)/(tabs)/home/Home");
+      console.log("Response Data: ", data);
     },
   });
 

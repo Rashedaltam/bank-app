@@ -1,4 +1,5 @@
 import { logout } from "@/api/auth";
+import UserProfile from "@/components/UserProfile";
 import AuthContext from "@/context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
@@ -31,6 +32,7 @@ const Home = () => {
         <Text>Logout</Text>
       </TouchableOpacity>
       <Text>Home</Text>
+      <UserProfile />
     </View>
   );
 };
