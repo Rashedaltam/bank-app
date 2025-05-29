@@ -34,7 +34,7 @@ const DepositToAccount = async () => {
   return responce.data;
 };
 
-////// "Deposit to your account"
+////// "Withdraw from your account"
 
 const WithdrawFromoAccount = async () => {
   const responce = await instance.put(

@@ -1,10 +1,12 @@
 import { logout } from "@/api/auth";
 import UserProfile from "@/components/UserProfile";
+import UserTransactions from "@/components/UserTransactions";
 import AuthContext from "@/context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import React, { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 
 const Home = () => {
   const router = useRouter();
@@ -26,13 +28,27 @@ const Home = () => {
     mutate();
   };
 
+  ////// new user transactions handeler
+
+  const userTransactionsHandle = ()=>{
+    router.push("/(protected)/(tabs)/home/ownTransactions")
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Text>Logout</Text>
       </TouchableOpacity>
       <Text>Home</Text>
-      <UserProfile />
+      <UserProfile/>
+      <UserTransactions/>
+
+      <TouchableOpacity onPress={userTransactionsHandle} style = {styles.glowButton}>
+    
+        <Text>new</Text>
+        
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -52,4 +68,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 10,
   },
+  glowButton: {
+    marginTop: 16,
+    padding: 14,
+    borderRadius: 8,
+    backgroundColor: "#3a86ff",
+    shadowColor: "#3a86ff",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 10,
+    alignItems: "center",}
 });

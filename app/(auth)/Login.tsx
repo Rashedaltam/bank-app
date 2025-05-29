@@ -20,7 +20,7 @@ const Login = () => {
     mutationFn: () => login({ username, password }),
     onSuccess: (data) => {
       setIsAuthenticated(true);
-      router.replace("/(protected)/(tabs)/home/Home");
+      router.replace(`/(protected)/(tabs)/home/Home`);
       console.log(`Logged in successfully as: ${username}`);
       console.log("Response Data", data);
     },
