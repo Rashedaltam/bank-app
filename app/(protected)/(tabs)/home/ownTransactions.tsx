@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { DepositToAccount, GetProfile, WithdrawFromoAccount } from '@/api/services' 
+import UserProfileBalanceData from '@/components/UserProfileBalanceData'
 
 /////// setting type for drop down value
 type transactionType = `deposit` | `withdraw`
@@ -8,7 +11,7 @@ type transactionType = `deposit` | `withdraw`
 
 ///// drop sown list for "withdraw" and "deposit" options for each transaction
 
-const ownTransactions = () => {
+const ownTransactions= () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<transactionType | null>(null);
   const [items, setItems] = useState([
@@ -16,9 +19,24 @@ const ownTransactions = () => {
     { label: 'Withdraw', value: 'withdraw' as transactionType }
   ]);
 
+
+  //useMutation for new transaction (deposits & withdraw)
+
+//   const {mutate} = useMutation(
+//     {
+//         // mutationKey:["DepositToAccount","WithdrawFromoAccount"],
+//         // mutationFn: value === `deposit` ? DepositToAccount(amount) : WithdrawFromoAccount(amount)
+//     }
+//   )
+
   return (
     <View>
       <Text>ownTransactions</Text>
+
+      {/* ////// to show the current balance */}
+      <View>
+        <UserProfileBalanceData/>
+      </View>
 
      <View style={{ padding: 20 }}>
       <DropDownPicker
@@ -37,8 +55,8 @@ const ownTransactions = () => {
           You selected: {value === 'deposit' ? 'Deposit' : 'Withdraw'}
         </Text>
       )}
-
     </View>
+    
 
     </View>
   )

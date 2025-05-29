@@ -58,15 +58,4 @@ export default UserProfile;
 
 const styles = StyleSheet.create({});
 
-// <View>
-//       <Text>{data.username}</Text>
-//       {data ? (
-//         data?.image ? (
-//           <Image source={{ uri: data?.iamge }} />
-//         ) : (
-//           <Text>No image exist.</Text>
-//         )
-//       ) : (
-//         <Text>NO DATA</Text>
-//       )}
-//     </View>
+

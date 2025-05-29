@@ -4,10 +4,10 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 
-const UserDeposits: React.FC = () => {
+const xyz: React.FC = () => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["userTransactions"],
-    queryFn: DepositToAccount 
+    queryKey: ["userProfile"],
+    queryFn: GetProfile,
   });
 
   if (isLoading) {
@@ -15,22 +15,42 @@ const UserDeposits: React.FC = () => {
   }
 
   if (isError) {
-    console.error("Error in Deposits:", error?.message);
-    return <Text>Error depositing</Text>;  // <-- valid ReactNode
+    console.error("Error fetching profile:", error?.message);
+    return <Text>Error loading profile.</Text>;  // <-- valid ReactNode
   }
 
   if (!data) {
     return <Text>No data found</Text>;
   }
- console.log("Deposits", data)
+
   return (
     <View>
       <Text>hellooooo</Text>
     </View>
   );
+
+//  const UserProfileData: React.FC = () => {
+//   const { data, isLoading, isError, error } = useQuery({
+//     queryKey: ["userProfile"],
+//     queryFn: GetProfile,
+//   });
+
+//   if (isLoading) {
+//     return "Loading..."
+//   }
+
+//   if (isError) {
+//     console.error("Error fetching profile:", error?.message);
+//     return 
+//   }
+
+//   if (!data) {
+//     return ""
+//   }
+
 };
 
-export default UserDeposits;
+export default xyz;
 
 
 const styles = StyleSheet.create({});
