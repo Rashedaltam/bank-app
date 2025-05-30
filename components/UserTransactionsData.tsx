@@ -1,22 +1,19 @@
-// UserProfile.tsx
-
 import { useUserProfileData } from "@/hooks/useUserProfileData";
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-const UserProfileBalanceData: React.FC = () => {
+const UserTransactionsData = () => {
+  //
   const { data, isLoading, isError, error } = useUserProfileData();
 
   if (isLoading) return <Text>Loading...</Text>;
   if (isError) return <Text>Error: {error?.message}</Text>;
   if (!data) return <Text>No data found</Text>;
 
-  // pass profile data down
-  return (
-    <View>
-      <Text>Balance: {data.balance}</Text>
-    </View>
-  );
+  // pass  data down
+  return <View></View>;
 };
 
-export default UserProfileBalanceData;
+export default UserTransactionsData;
+
+const styles = StyleSheet.create({});

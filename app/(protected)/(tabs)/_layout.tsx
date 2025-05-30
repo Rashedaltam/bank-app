@@ -1,13 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
-import Home from "./home/Home";
 
 const _layout = () => {
   return (
     <Tabs>
       <Tabs.Screen
-        name="[Home]"
+        name="Home"
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ size, color }) => (
@@ -15,7 +14,7 @@ const _layout = () => {
           ),
         }}
       />
-      <Tabs.Screen name="Profile" />
+      <Tabs.Screen name="Benefieciary" />
     </Tabs>
   );
 };
