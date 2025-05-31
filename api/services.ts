@@ -54,11 +54,15 @@ const WithdrawFromoAccount = async (amount: number) => {
 
 //////// Transfer to another user from my account
 
-const TransferfromMYAcc = async (amount: number, username: string) => {
-  const responce = await instance.put(
-    "/mini-project/api/transactions/transfer/<username>"
+const TransferfromMYAcc = async (amountinput: number, username: string) => {
+  const response = await instance.put(
+    "/mini-project/api/transactions/transfer/<username>",
+    {
+      amount: amountinput,
+      username: username,
+    }
   );
-  return responce.data;
+  return response.data;
 };
 
 ////// Get User Info by user ID

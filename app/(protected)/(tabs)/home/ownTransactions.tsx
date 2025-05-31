@@ -64,7 +64,7 @@ const OwnTransactions = () => {
   return (
     <View>
       {/* Page title */}
-      <Text style={styles.title}>Own Transactions</Text>
+      <Text style={styles.title}>New Transactions</Text>
 
       {/* User balance display */}
       <View>

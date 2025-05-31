@@ -1,11 +1,16 @@
 // UserProfile.tsx
 
-import { useUserProfileData } from "@/hooks/useUserProfileData";
+import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
 import React from "react";
 import { Text, View } from "react-native";
 
+type BalanceCardProps = {
+  amount: number;
+  currency?: string;
+};
+
 const UserProfileBalanceData: React.FC = () => {
-  const { data, isLoading, isError, error } = useUserProfileData();
+  const { data, isLoading, isError, error } = useFetchUserProfileData();
 
   if (isLoading) return <Text>Loading...</Text>;
   if (isError) return <Text>Error: {error?.message}</Text>;

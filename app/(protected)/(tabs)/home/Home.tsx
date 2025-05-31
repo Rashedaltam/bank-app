@@ -1,12 +1,11 @@
 import { logout } from "@/api/auth";
 import UserProfile from "@/components/UserProfile";
-import UserTransactions from "@/components/UserTransactions";
+import UserTransactionsList from "@/components/UserTransactionsList";
 import AuthContext from "@/context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import React, { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
 
 const Home = () => {
   const router = useRouter();
@@ -30,9 +29,9 @@ const Home = () => {
 
   ////// new user transactions handeler
 
-  const userTransactionsHandle = ()=>{
-    router.push("/(protected)/(tabs)/home/ownTransactions")
-  }
+  const userTransactionsHandle = () => {
+    router.push("/(protected)/(tabs)/home/ownTransactions");
+  };
 
   return (
     <View style={styles.container}>
@@ -40,15 +39,14 @@ const Home = () => {
         <Text>Logout</Text>
       </TouchableOpacity>
       <Text>Home</Text>
-      <UserProfile/>
-      <UserTransactions/>
-
-      <TouchableOpacity onPress={userTransactionsHandle} style = {styles.glowButton}>
-    
+      <UserProfile />
+      <UserTransactionsList />
+      <TouchableOpacity
+        onPress={userTransactionsHandle}
+        style={styles.glowButton}
+      >
         <Text>new</Text>
-        
       </TouchableOpacity>
-
     </View>
   );
 };
@@ -66,10 +64,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 20,
-    marginTop: 10,
+    marginTop: 5,
   },
   glowButton: {
-    marginTop: 16,
+    marginTop: 5,
     padding: 14,
     borderRadius: 8,
     backgroundColor: "#3a86ff",
@@ -77,5 +75,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.9,
     shadowRadius: 10,
-    alignItems: "center",}
+    alignItems: "center",
+  },
 });

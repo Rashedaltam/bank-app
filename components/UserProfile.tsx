@@ -1,14 +1,16 @@
-import { GetProfile } from "@/api/services";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
+import React, { useEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-
 const UserProfile: React.FC = () => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["userProfile"],
-    queryFn: GetProfile,
-  });
+  const { data, isLoading, isError, error } = useFetchUserProfileData();
+
+  // for debugging and identifying data interface
+  useEffect(() => {
+    if (data) {
+      console.log("User Profile:", data);
+    }
+  }, [data]);
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -16,7 +18,7 @@ const UserProfile: React.FC = () => {
 
   if (isError) {
     console.error("Error fetching profile:", error?.message);
-    return <Text>Error loading profile.</Text>;  // <-- valid ReactNode
+    return <Text>Error loading profile.</Text>; // <-- valid ReactNode
   }
 
   if (!data) {
@@ -34,28 +36,4 @@ const UserProfile: React.FC = () => {
 
 export default UserProfile;
 
-// const UserProfile = () => {
-//   const { data, isLoading, isError, error } = useQuery({
-//     queryKey: ["userProfile"],
-//     queryFn: GetProfile,
-//   });
-
-//   if (isLoading) return <Text>loading...</Text>;
-//   if (isError) return console.log("Error", error?.message); 
-
-//   console.log("Fetching data: ", data);
-//   if (!data) return <Text>No data found</Text>;
-
-//   return (
-//     <View>
-//       <Text>{data.username}</Text>
-//       <Image source={{ uri: data?.iamge }} />
-//     </View>
-//   );
-// };
-
-// export default UserProfile;
-
 const styles = StyleSheet.create({});
-
-
