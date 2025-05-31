@@ -30,7 +30,7 @@ export function useDepositOrWithdraw() {
     onSuccess: (_data, variables) => {
       Alert.alert(
         "Success",
-        `Transaction of ${variables.amount} KWD completed.`
+        `Transaction of ${variables.amount.toLocaleString()} KWD completed.`
       );
     },
   });

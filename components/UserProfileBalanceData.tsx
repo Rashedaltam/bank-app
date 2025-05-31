@@ -2,7 +2,7 @@
 
 import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 type BalanceCardProps = {
   amount: number;
@@ -19,9 +19,20 @@ const UserProfileBalanceData: React.FC = () => {
   // pass profile data down
   return (
     <View>
-      <Text>Balance: {data.balance}</Text>
+      <Text style={styles.BalanceFont}>
+        {data.balance.toLocaleString()} KWD
+      </Text>
     </View>
   );
 };
 
 export default UserProfileBalanceData;
+
+const styles = StyleSheet.create({
+  BalanceFont: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#ffffff",
+    letterSpacing: 1.2,
+  },
+});

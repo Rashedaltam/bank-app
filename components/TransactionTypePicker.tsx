@@ -6,7 +6,10 @@
 import { TransactionType } from "@/types/TransactionType";
 import type { Dispatch, SetStateAction } from "react";
 import React from "react";
+import { Dimensions, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+
+const screenWidth = Dimensions.get("window").width;
 
 //originally built dropdow picker didn't include this interface.
 // however it needed now to enable refacturing
@@ -39,7 +42,60 @@ const TransactionTypePicker = ({
     setValue={setValue}
     setItems={setItems}
     placeholder="Select transaction type"
+    style={styles.dropdown}
+    dropDownContainerStyle={styles.dropDownContainer}
+    textStyle={styles.textStyle}
+    labelStyle={styles.labelStyle}
+    listItemLabelStyle={styles.listItemLabelStyle}
+    selectedItemLabelStyle={styles.selectedItemLabelStyle}
+    placeholderStyle={styles.placeholderStyle}
+    arrowIconStyle={styles.arrowIconStyle}
+    listMode="SCROLLVIEW"
   />
 );
 
 export default TransactionTypePicker;
+
+const styles = StyleSheet.create({
+  dropdown: {
+    backgroundColor: "#2c2c2c",
+    borderColor: "#444",
+    width: screenWidth * 0.9,
+    alignSelf: "center",
+    minHeight: 60,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  dropDownContainer: {
+    backgroundColor: "#1e1e1e",
+    borderColor: "#444",
+    width: screenWidth * 0.9,
+    alignSelf: "center",
+  },
+  textStyle: {
+    fontSize: 30,
+    color: "#ffffff",
+  },
+  labelStyle: {
+    fontSize: 30,
+    color: "#ffffff",
+  },
+  listItemLabelStyle: {
+    fontSize: 30,
+    color: "#ffffff",
+    padding: 10,
+  },
+  selectedItemLabelStyle: {
+    fontWeight: "bold",
+    color: "#3a86ff",
+    padding: 10,
+  },
+  placeholderStyle: {
+    color: "#aaa",
+    fontSize: 30,
+    padding: 10,
+  },
+  arrowIconStyle: {
+    tintColor: "white",
+  },
+});

@@ -43,7 +43,7 @@ const TransactionAmountInput = ({ transactionType }: Props) => {
   return (
     <View>
       <Text style={styles.confirmationText}>
-        You selected: {transactionType}
+        You have selected to make a {transactionType.toLowerCase()}.
       </Text>
 
       <TextInput
@@ -51,6 +51,7 @@ const TransactionAmountInput = ({ transactionType }: Props) => {
         onChangeText={(text) => setAmountText(text.replace(/[^0-9.]/g, ""))}
         keyboardType="decimal-pad" //number-only keyboard on iOS/Android
         placeholder="Enter amount"
+        placeholderTextColor="#ffffff"
         inputMode="decimal" //number-only for HTML
         style={styles.input}
       />
@@ -74,31 +75,36 @@ export default TransactionAmountInput;
 
 const styles = StyleSheet.create({
   confirmationText: {
-    marginTop: 10,
+    color: "#ffffff",
     fontSize: 16,
+    marginBottom: 12,
+    textAlign: "center",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
+    backgroundColor: "#1a1a1a",
+    color: "#ffffff",
+    borderRadius: 8,
+    padding: 14,
     marginVertical: 10,
-    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
+    fontSize: 18,
   },
   button: {
-    backgroundColor: "green",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    backgroundColor: "#2a2a2a",
     borderRadius: 8,
+    padding: 14,
+    marginTop: 16,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    color: "white",
-    fontSize: 16,
+    color: "#ffffff",
     fontWeight: "bold",
+    fontSize: 18,
   },
   errorText: {
     color: "red",
     marginTop: 8,
+    textAlign: "center",
   },
 });
