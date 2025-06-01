@@ -35,8 +35,10 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "#aaa",
-    fontSize: 16,
-    marginBottom: 8,
+    fontSize: 12,
+    marginBottom: 2,
+    letterSpacing: 1,
+    fontWeight: "light",
   },
   amount: {
     color: "#fff",

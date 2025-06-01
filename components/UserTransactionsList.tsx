@@ -15,7 +15,7 @@ const UserTransactionsList = () => {
   //refetch upon screen focus
   useFocusEffect(
     useCallback(() => {
-      refetch(); // this forces re-fetch when screen is focused
+      refetch();
     }, [])
   );
 

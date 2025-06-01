@@ -1,8 +1,15 @@
 import { useFetchUserTransactionData } from "@/hooks/useFetchUserTransactionData";
 import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import DateRangePicker from "./DateRangePicker";
 import TransactionList from "./TransactionList";
 import TransactionsTypeFilter from "./TransactionsTypeFilter";
@@ -83,15 +90,19 @@ const SearchableTransactions: React.FC<Props> = ({
   return (
     <View>
       <UserProfileBalanceV2 balance={data.balance} />
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search by type or amount"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        selectionColor="#3a86ff"
-        placeholderTextColor={"#cccccc"}
-      />
-
+      <View style={styles.searchBoxContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search by type or amount"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          selectionColor="#3a86ff"
+          placeholderTextColor={"#cccccc"}
+        />
+        <TouchableOpacity>
+          <MaterialIcons name="add" size={40} color="#007AFF" />
+        </TouchableOpacity>
+      </View>
       <DateRangePicker
         fromDate={fromDate}
         toDate={toDate}
@@ -117,12 +128,20 @@ const styles = StyleSheet.create({
     paddingVertical: 18, // ⬆️ taller
     paddingHorizontal: 18,
     borderRadius: 12,
-    fontSize: 18,
+    fontSize: 15,
     marginBottom: 16,
     borderWidth: 1,
     borderColor: "#3a86ff",
     marginTop: 15,
     flexGrow: 1,
+    marginRight: 10,
+
+    letterSpacing: 1,
+    fontWeight: "light",
+  },
+  searchBoxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 20,
   },
 });

@@ -29,7 +29,10 @@ const TransactionList: React.FC<Props> = ({ transactions }) => {
 
         const formattedAmount = `${
           normalizedAmount >= 0 ? "+" : "-"
-        } ${Math.abs(normalizedAmount).toFixed(3)}`;
+        } ${Math.abs(normalizedAmount).toLocaleString("en-US", {
+          minimumFractionDigits: 3,
+          maximumFractionDigits: 3,
+        })}`;
 
         const displayDate = transaction.createdAt
           ? new Date(transaction.createdAt).toDateString()
