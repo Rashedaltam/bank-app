@@ -1,7 +1,8 @@
 // UserProfile.tsx
 
 import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
-import React from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 type BalanceCardProps = {
@@ -10,7 +11,15 @@ type BalanceCardProps = {
 };
 
 const UserProfileBalanceData: React.FC = () => {
-  const { data, isLoading, isError, error } = useFetchUserProfileData();
+  const { data, isLoading, isError, error, refetch } =
+    useFetchUserProfileData();
+
+  //refetch upon screen focus
+  useFocusEffect(
+    useCallback(() => {
+      refetch(); // ensures fresh data on screen focus
+    }, [])
+  );
 
   if (isLoading) return <Text>Loading...</Text>;
   if (isError) return <Text>Error: {error?.message}</Text>;

@@ -54,7 +54,7 @@ const WithdrawFromoAccount = async (amount: number) => {
 
 //////// Transfer to another user from my account
 
-const TransferfromMYAcc = async (amountinput: number, username: string) => {
+const TransferToBeneficiary = async (amountinput: number, username: string) => {
   const response = await instance.put(
     "/mini-project/api/transactions/transfer/<username>",
     {
@@ -77,7 +77,7 @@ export {
   GetProfile,
   GetTransactions,
   GetUserInfo,
-  TransferfromMYAcc,
+  TransferToBeneficiary,
   UpdateProfile,
   WithdrawFromoAccount,
 };

@@ -1,4 +1,5 @@
 import { register } from "@/api/auth";
+import { storeToken } from "@/api/store";
 import { useMutation } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { Link, router } from "expo-router";
@@ -19,11 +20,15 @@ const Register = () => {
     image: "",
   });
 
-  const { mutate, data } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => register(formData),
-    onSuccess: () => {
+    onSuccess: async (data) => {
+      const token = data.data?.token;
+      if (token) {
+        await storeToken(token);
+      }
       router.replace("/(protected)/(tabs)/home/Home");
-      console.log("Response Data: ", data);
+      console.log("Response Data:", data.data);
     },
   });
 
@@ -31,8 +36,17 @@ const Register = () => {
     mutate();
   };
 
+  // const pickImage = async () => {
+  //   // Request permission
+  //   const permissionResult =
+  //     await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  //   if (permissionResult.granted === false) {
+  //     alert("Permission to access camera roll is required!");
+  //     return;
+  //   }
+
   const pickImage = async () => {
-    // Request permission
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -41,9 +55,8 @@ const Register = () => {
       return;
     }
 
-    // Launch image picker
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: "images", // Use the updated string format
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,

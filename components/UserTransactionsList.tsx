@@ -1,5 +1,6 @@
 import { useFetchUserTransactionData } from "@/hooks/useFetchUserTransactionData";
-import React, { useEffect } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -9,7 +10,14 @@ import {
 } from "react-native";
 
 const UserTransactionsList = () => {
-  const { data, isLoading, error } = useFetchUserTransactionData();
+  const { data, isLoading, error, refetch } = useFetchUserTransactionData();
+
+  //refetch upon screen focus
+  useFocusEffect(
+    useCallback(() => {
+      refetch(); // this forces re-fetch when screen is focused
+    }, [])
+  );
 
   // for debugging and identifying data interface
   useEffect(() => {
