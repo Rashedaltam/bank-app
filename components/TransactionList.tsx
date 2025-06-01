@@ -1,34 +1,59 @@
-import { TransactionDataType } from "@/types/TransactionDataType";
+// Displays a scrollable list of formatted transaction cards
+
 import React from "react";
 import { FlatList, Platform, StyleSheet, Text, View } from "react-native";
 
+type Transaction = {
+  _id: string;
+  amount: number;
+  createdAt: string;
+  type: string;
+  from?: string;
+  to?: string;
+};
+
 type Props = {
-  transactions: TransactionDataType[];
+  transactions: Transaction[];
 };
 
 const TransactionList: React.FC<Props> = ({ transactions }) => {
   return (
     <FlatList
       data={transactions}
-      keyExtractor={(item) => item._id}
-      renderItem={({ item }) => {
-        const isPositive = item.type === "deposit";
-        const label = isPositive ? `From: ${item.from}` : `To: ${item.to}`;
-        const formattedDate = new Date(item.createdAt).toLocaleDateString();
+      keyExtractor={(transaction) => transaction._id}
+      renderItem={({ item: transaction }) => {
+        const isDeposit = transaction.type.toLowerCase() === "deposit";
+        const normalizedAmount = isDeposit
+          ? Math.abs(transaction.amount)
+          : -Math.abs(transaction.amount);
+
+        const formattedAmount = `${
+          normalizedAmount >= 0 ? "+" : "-"
+        } ${Math.abs(normalizedAmount).toFixed(3)}`;
+
+        const displayDate = transaction.createdAt
+          ? new Date(transaction.createdAt).toDateString()
+          : null;
 
         return (
           <View style={styles.item}>
+            {/* Left side: type and date */}
             <View>
-              <Text style={styles.label}>{label}</Text>
-              <Text style={styles.date}>{formattedDate}</Text>
+              <Text style={styles.type}>
+                {transaction.type.charAt(0).toUpperCase() +
+                  transaction.type.slice(1)}
+              </Text>
+              {displayDate && <Text style={styles.date}>{displayDate}</Text>}
             </View>
+
+            {/* Right side: amount */}
             <Text
               style={[
                 styles.amount,
-                isPositive ? styles.positive : styles.negative,
+                normalizedAmount >= 0 ? styles.positive : styles.negative,
               ]}
             >
-              {isPositive ? "+" : "-"} {Math.abs(item.amount).toFixed(2)}
+              {formattedAmount} KWD
             </Text>
           </View>
         );
@@ -37,6 +62,7 @@ const TransactionList: React.FC<Props> = ({ transactions }) => {
   );
 };
 
+// Styles for transaction card
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "#1e1e1e",
@@ -47,32 +73,22 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     minHeight: 80,
+    marginHorizontal: 20,
   },
-  label: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  date: {
-    color: "#999",
-    fontSize: 12,
-    marginTop: 4,
-  },
+  type: { color: "#fff", fontSize: 16, fontWeight: "500" },
+  date: { color: "#999", fontSize: 12, marginTop: 4 },
   amount: {
     fontSize: 18,
     fontWeight: "bold",
+    letterSpacing: 2,
     fontFamily: Platform.select({
-      ios: "Menlo",
-      android: "monospace",
-      default: "Courier",
+      ios: "SF Pro",
+      android: "Roboto Mono",
+      default: "Roboto Mono",
     }),
   },
-  positive: {
-    color: "#4caf50",
-  },
-  negative: {
-    color: "#f44336",
-  },
+  positive: { color: "#4caf50" },
+  negative: { color: "#f44336" },
 });
 
 export default TransactionList;

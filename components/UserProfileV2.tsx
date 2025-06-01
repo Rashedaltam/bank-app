@@ -47,7 +47,7 @@ const UserProfileV2: React.FC = () => {
       <Image source={{ uri: imageUri }} style={styles.avatar} />
       <Text style={styles.username}>{data?.username}</Text>
       <TouchableOpacity style={styles.exitButton} onPress={handleLogout}>
-        <Text style={styles.exitText}>×</Text>
+        <Text style={styles.exitText}>LOGOUT</Text>
       </TouchableOpacity>
     </View>
   );
@@ -77,18 +77,18 @@ const styles = StyleSheet.create({
   },
   exitButton: {
     backgroundColor: "#2a2a2a",
-    width: 40,
+    width: 90,
     height: 40,
     borderRadius: 20,
     alignContent: "center",
     justifyContent: "center",
   },
   exitText: {
-    color: "#fff",
+    color: "#aaa",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 15,
     textAlign: "center",
-    lineHeight: 30,
+    lineHeight: 15,
     textAlignVertical: "center",
   },
 });

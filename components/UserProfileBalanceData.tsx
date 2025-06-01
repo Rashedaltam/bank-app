@@ -40,7 +40,7 @@ export default UserProfileBalanceData;
 const styles = StyleSheet.create({
   BalanceFont: {
     fontSize: 36,
-    fontWeight: "bold",
+    fontWeight: "light",
     color: "#ffffff",
     letterSpacing: 1.2,
   },

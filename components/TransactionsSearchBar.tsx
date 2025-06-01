@@ -1,35 +1,43 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
 type Props = {
   value: string;
   onChange: (text: string) => void;
 };
 
-const SearchBar: React.FC<Props> = ({ value, onChange }) => (
-  <TextInput
-    placeholder="Search by transaction type or amount"
-    placeholderTextColor="#888"
-    style={styles.input}
-    value={value}
-    onChangeText={onChange}
-  />
+const TransactionsSearchBar: React.FC<Props> = ({ value, onChange }) => (
+  <View style={styles.wrapper}>
+    <TextInput
+      placeholder="Search by type or amount"
+      placeholderTextColor="#aaa"
+      style={styles.input}
+      value={value}
+      onChangeText={onChange}
+    />
+  </View>
 );
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginTop: 20,
+    marginBottom: 10,
+    paddingHorizontal: 16,
+  },
   input: {
-    backgroundColor: "#2a2a2a",
-    color: "#fff",
+    backgroundColor: "#1e1e1e",
+    color: "#ffffff",
     paddingVertical: 14,
     paddingHorizontal: 18,
     borderRadius: 12,
-    fontSize: 18,
-    marginBottom: 16,
-    borderWidth: 1,
+    fontSize: 16,
+    borderWidth: 1.3,
     borderColor: "#3a86ff",
-    marginTop: 15,
-    flexGrow: 1,
+    shadowColor: "#3a86ff",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
   },
 });
 
-export default SearchBar;
+export default TransactionsSearchBar;

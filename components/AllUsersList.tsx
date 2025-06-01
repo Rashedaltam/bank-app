@@ -4,7 +4,6 @@ import React from "react";
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   StyleSheet,
   Text,
   View,
@@ -23,7 +22,6 @@ const AllUsersList = () => {
 
   const renderItem = ({ item }: { item: UserProfileDataType }) => (
     <View style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.image} />
       <Text style={styles.username}>{item.username}</Text>
     </View>
   );

@@ -1,203 +1,129 @@
 import { useFetchUserTransactionData } from "@/hooks/useFetchUserTransactionData";
-import { TransactionDataType } from "@/types/TransactionDataType";
-import React, { useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useMemo, useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import DateRangePicker from "./DateRangePicker";
 import TransactionList from "./TransactionList";
-import TransactionsSearchBar from "./TransactionsSearchBar";
 import TransactionsTypeFilter from "./TransactionsTypeFilter";
+import UserProfileBalanceV2 from "./UserProfileBalanceV2";
 
-type SearchableTransactionsProps = {
+type Props = {
   fromDate: Date | null;
   toDate: Date | null;
   onChangeDate: (type: "from" | "to", date: Date) => void;
 };
 
-const SearchableTransactions: React.FC<SearchableTransactionsProps> = ({
+const SearchableTransactions: React.FC<Props> = ({
   fromDate,
   toDate,
   onChangeDate,
 }) => {
-  const [query, setQuery] = useState("");
-  const [selectedType, setSelectedType] = useState<"deposit" | "withdraw">(
-    "deposit"
-  );
-  const [datePickerVisible, setDatePickerVisible] = useState<{
-    mode: "from" | "to" | null;
-    visible: boolean;
-  }>({ mode: null, visible: false });
+  const { data: transactionList = [] } = useFetchUserTransactionData();
 
-  const {
-    data: transactions,
-    isLoading,
-    error,
-  } = useFetchUserTransactionData();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTransactionType, setSelectedTransactionType] = useState("All");
 
-  const filteredTransactions: TransactionDataType[] = useMemo(() => {
-    if (!transactions) return [];
+  const transactionTypes = useMemo(() => {
+    const types = Array.from(
+      new Set(
+        transactionList.map((transaction) => transaction.type?.toLowerCase())
+      )
+    );
+    return [
+      "All",
+      ...types.map((type) => type.charAt(0).toUpperCase() + type.slice(1)),
+    ];
+  }, [transactionList]);
 
-    const lower = query.toLowerCase().trim();
+  const filteredTransactions = useMemo(() => {
+    const normalizedQuery = searchQuery.toLowerCase().trim();
 
-    return transactions.filter((tx) => {
-      const matchesType = tx.type === selectedType;
+    return transactionList.filter((transaction) => {
+      if (!transaction.createdAt || !transaction.type) return false;
+
+      const transactionDate = new Date(transaction.createdAt);
+      if (isNaN(transactionDate.getTime())) return false;
+
+      const matchesType =
+        selectedTransactionType === "All" ||
+        transaction.type.toLowerCase() ===
+          selectedTransactionType.toLowerCase();
 
       const matchesSearch =
-        tx.type.includes(lower) || tx.amount.toString().includes(query);
+        transaction.type.toLowerCase().includes(normalizedQuery) ||
+        (!isNaN(Number(searchQuery)) &&
+          transaction.amount === parseFloat(searchQuery));
 
-      const txDate = new Date(tx.createdAt);
-      const matchFrom = fromDate ? txDate >= fromDate : true;
-      const matchTo = toDate ? txDate <= toDate : true;
+      const withinFromRange = fromDate
+        ? transactionDate >= new Date(fromDate.setHours(0, 0, 0, 0))
+        : true;
+      const withinToRange = toDate
+        ? transactionDate <= new Date(toDate.setHours(23, 59, 59, 999))
+        : true;
 
-      return matchesType && matchesSearch && matchFrom && matchTo;
+      return matchesType && matchesSearch && withinFromRange && withinToRange;
     });
-  }, [transactions, query, selectedType, fromDate, toDate]);
+  }, [transactionList, searchQuery, selectedTransactionType, fromDate, toDate]);
 
-  const handleConfirm = (date: Date) => {
-    if (datePickerVisible.mode === "from") onChangeDate("from", date);
-    if (datePickerVisible.mode === "to") onChangeDate("to", date);
-    setDatePickerVisible({ mode: null, visible: false });
-  };
+  const { data, isLoading, isError, error, refetch } =
+    useFetchUserProfileData();
 
-  const handleCancel = () => {
-    setDatePickerVisible({ mode: null, visible: false });
-  };
+  //refetch upon screen focus
+  useFocusEffect(
+    useCallback(() => {
+      refetch(); // ensures fresh data on screen focus
+    }, [])
+  );
 
-  const clearFromDate = () => onChangeDate("from", null as any);
-  const clearToDate = () => onChangeDate("to", null as any);
+  if (isLoading) return <Text>Loading...</Text>;
+  if (isError) return <Text>Error: {error?.message}</Text>;
+  if (!data) return <Text>No data found</Text>;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.searchRow}>
-        <TransactionsSearchBar value={query} onChange={setQuery} />
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => console.log("Add")}
-        >
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
-      </View>
+    <View>
+      <UserProfileBalanceV2 balance={data.balance} />
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search by type or amount"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        selectionColor="#3a86ff"
+        placeholderTextColor={"#cccccc"}
+      />
+
+      <DateRangePicker
+        fromDate={fromDate}
+        toDate={toDate}
+        onChangeFromDate={(date) => onChangeDate("from", date)}
+        onChangeToDate={(date) => onChangeDate("to", date)}
+      />
 
       <TransactionsTypeFilter
-        type={["deposit", "withdraw"]}
-        selectedType={selectedType}
-        onSelectType={setSelectedType}
+        types={transactionTypes}
+        selectedType={selectedTransactionType}
+        onSelectType={setSelectedTransactionType}
       />
 
-      <View style={styles.dateRow}>
-        <View style={styles.dateGroup}>
-          <TouchableOpacity
-            onPress={() =>
-              setDatePickerVisible({ mode: "from", visible: true })
-            }
-            style={styles.dateButton}
-          >
-            <Text style={styles.dateButtonText}>
-              From: {fromDate ? fromDate.toDateString() : "Any"}
-            </Text>
-          </TouchableOpacity>
-          {fromDate && (
-            <TouchableOpacity onPress={clearFromDate} style={styles.clearBtn}>
-              <Text style={styles.clearBtnText}>Clear</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-
-        <View style={styles.dateGroup}>
-          <TouchableOpacity
-            onPress={() => setDatePickerVisible({ mode: "to", visible: true })}
-            style={styles.dateButton}
-          >
-            <Text style={styles.dateButtonText}>
-              To: {toDate ? toDate.toDateString() : "Any"}
-            </Text>
-          </TouchableOpacity>
-          {toDate && (
-            <TouchableOpacity onPress={clearToDate} style={styles.clearBtn}>
-              <Text style={styles.clearBtnText}>Clear</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#3a86ff" />
-      ) : error ? (
-        <Text style={{ color: "#f44336", textAlign: "center" }}>
-          Error loading transactions
-        </Text>
-      ) : (
-        <TransactionList transactions={filteredTransactions} />
-      )}
-
-      <DateTimePickerModal
-        isVisible={datePickerVisible.visible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
+      <TransactionList transactions={filteredTransactions} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#121212",
-  },
-  searchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  addButton: {
-    marginLeft: 12,
-    backgroundColor: "#3a86ff",
+  searchInput: {
+    backgroundColor: "#2a2a2a",
+    color: "#fff",
+    paddingVertical: 18, // ⬆️ taller
+    paddingHorizontal: 18,
     borderRadius: 12,
-    width: 48,
-    height: 48,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  addButtonText: {
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "bold",
-    marginTop: -2,
-  },
-  dateRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    fontSize: 18,
     marginBottom: 16,
-  },
-  dateGroup: {
-    flex: 1,
-    alignItems: "center",
-    marginHorizontal: 4,
-  },
-  dateButton: {
-    backgroundColor: "#333",
-    padding: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    width: "100%",
-  },
-  dateButtonText: {
-    color: "#fff",
-    fontSize: 14,
-  },
-  clearBtn: {
-    marginTop: 4,
-  },
-  clearBtnText: {
-    color: "#f55",
-    fontSize: 12,
+    borderWidth: 1,
+    borderColor: "#3a86ff",
+    marginTop: 15,
+    flexGrow: 1,
+    marginHorizontal: 20,
   },
 });
 
