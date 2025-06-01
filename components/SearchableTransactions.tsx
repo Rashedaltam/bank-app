@@ -1,7 +1,7 @@
 import { useFetchUserTransactionData } from "@/hooks/useFetchUserTransactionData";
 import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
 import {
   StyleSheet,
@@ -87,6 +87,11 @@ const SearchableTransactions: React.FC<Props> = ({
   if (isError) return <Text>Error: {error?.message}</Text>;
   if (!data) return <Text>No data found</Text>;
 
+  //handle adding new transaction
+  const userTransactionsHandle = () => {
+    router.push("/(protected)/(tabs)/home/ownTransactions");
+  };
+
   return (
     <View>
       <UserProfileBalanceV2 balance={data.balance} />
@@ -99,7 +104,7 @@ const SearchableTransactions: React.FC<Props> = ({
           selectionColor="#3a86ff"
           placeholderTextColor={"#cccccc"}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={userTransactionsHandle}>
           <MaterialIcons name="add" size={40} color="#007AFF" />
         </TouchableOpacity>
       </View>

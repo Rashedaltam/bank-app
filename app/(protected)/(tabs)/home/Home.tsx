@@ -5,7 +5,7 @@ import AuthContext from "@/context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 const Home = () => {
   const router = useRouter();
@@ -22,10 +22,6 @@ const Home = () => {
       console.log("Logout failed:", error.message);
     },
   });
-
-  const handleLogout = () => {
-    mutate();
-  };
 
   ////// new transfer amount handeler
 
@@ -57,13 +53,6 @@ const Home = () => {
         toDate={toDate}
         onChangeDate={handleDateChange}
       />
-
-      <TouchableOpacity
-        onPress={userTransactionsHandle}
-        style={styles.glowButton}
-      >
-        <Text>new</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };

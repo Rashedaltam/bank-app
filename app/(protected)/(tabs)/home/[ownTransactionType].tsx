@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 const ownTransactionType = () => {
   const { ownTransactionType } = useLocalSearchParams();
+
   //type gaurd
   if (ownTransactionType === "DEPOSIT" || ownTransactionType === "WITHDRAW") {
     const safeTransactionType: "DEPOSIT" | "WITHDRAW" = ownTransactionType;
@@ -42,28 +43,63 @@ const styles = StyleSheet.create({
   //   fontSize: 16,
   //   color: "red",
   // },
+
   container: {
-    backgroundColor: "#121212",
     flex: 1,
-    justifyContent: "center",
-    padding: 24,
-    borderRadius: 16,
+    backgroundColor: "#0d0d0d", // Match base theme
+    paddingHorizontal: 24,
+    paddingTop: 60,
+    justifyContent: "flex-start",
     alignItems: "center",
+  },
+  contentWrapper: {
     width: "100%",
     maxWidth: 400,
-    alignSelf: "center",
+    alignItems: "center",
   },
   title: {
-    fontSize: 26,
-    fontWeight: "700",
-    color: "#ffffff",
-    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 12,
+    textAlign: "center",
     textTransform: "capitalize",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#aaa",
+    marginBottom: 35,
     textAlign: "center",
   },
-  errorText: {
-    fontSize: 18,
-    color: "red",
-    textAlign: "center",
+  input: {
+    backgroundColor: "#1a1a1a",
+    borderRadius: 12,
+    borderColor: "#333",
+    borderWidth: 1,
+    color: "#fff",
+    fontSize: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    width: "100%",
+    marginVertical: 50,
+  },
+  button: {
+    backgroundColor: "#3a86ff",
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    width: "100%",
+    shadowColor: "#3a86ff",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 4,
+    marginHorizontal: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

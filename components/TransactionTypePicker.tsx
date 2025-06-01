@@ -60,39 +60,44 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: "#2c2c2c",
     borderColor: "#444",
+    borderRadius: 12, // ⬅️ Add rounding
     width: screenWidth * 0.9,
     alignSelf: "center",
-    minHeight: 60,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    minHeight: 48, // ⬅️ Reduce height
+    paddingVertical: 8, // ⬅️ Smaller vertical padding
+    paddingHorizontal: 12,
   },
   dropDownContainer: {
     backgroundColor: "#1e1e1e",
     borderColor: "#444",
+    borderRadius: 12, // ⬅️ Add rounding
     width: screenWidth * 0.9,
     alignSelf: "center",
   },
   textStyle: {
-    fontSize: 30,
     color: "#ffffff",
+    fontSize: 16, // ⬅️ Reduce font size
+    padding: 6, // ⬅️ Reduce item spacing
   },
   labelStyle: {
-    fontSize: 30,
     color: "#ffffff",
+    fontSize: 16, // ⬅️ Reduce font size
+    padding: 6, // ⬅️ Reduce item spacing
   },
   listItemLabelStyle: {
-    fontSize: 30,
     color: "#ffffff",
-    padding: 10,
+    fontSize: 16, // ⬅️ Reduce font size
+    padding: 6, // ⬅️ Reduce item spacing
   },
   selectedItemLabelStyle: {
     fontWeight: "bold",
     color: "#3a86ff",
-    padding: 10,
+    fontSize: 16, // ⬅️ Reduce font size
+    padding: 6, // ⬅️ Reduce item spacing
   },
   placeholderStyle: {
     color: "#aaa",
-    fontSize: 30,
+    fontSize: 16,
     padding: 10,
   },
   arrowIconStyle: {

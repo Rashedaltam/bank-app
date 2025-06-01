@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 15,
     textAlignVertical: "center",
+    letterSpacing: 0.5,
   },
 });
 

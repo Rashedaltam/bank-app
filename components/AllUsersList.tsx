@@ -41,31 +41,33 @@ export default AllUsersList;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: "#0d0d0d", // dark background
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#f1f1f1",
-    padding: 12,
+    backgroundColor: "#1a1a1a", // dark card background
+    padding: 16,
     marginVertical: 6,
-    borderRadius: 8,
-  },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#2c2c2c", // subtle border
   },
   username: {
     fontSize: 16,
     fontWeight: "600",
+    color: "#ffffff", // white text
   },
   error: {
     color: "red",
     padding: 20,
+    backgroundColor: "#0d0d0d",
+    textAlign: "center",
   },
   message: {
     padding: 20,
+    color: "#aaa", // light text
     textAlign: "center",
+    backgroundColor: "#0d0d0d",
   },
 });

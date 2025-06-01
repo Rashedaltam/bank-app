@@ -1,8 +1,9 @@
 import TransactionTypePicker from "@/components/TransactionTypePicker";
-import UserProfileBalanceData from "@/components/UserProfileBalanceData";
+import UserProfileBalanceV2 from "@/components/UserProfileBalanceV2";
+import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
 import { TransactionType } from "@/types/TransactionType";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -43,21 +44,32 @@ const OwnTransactions = () => {
     router.push(`/(protected)/(tabs)/home/${value}`);
   };
 
+  //get user balance
+  const { data, isLoading, isError, error, refetch } =
+    useFetchUserProfileData();
+
+  //refetch upon screen focus
+  useFocusEffect(
+    useCallback(() => {
+      refetch(); // ensures fresh data on screen focus
+    }, [])
+  );
+
+  if (isLoading) return <Text>Loading...</Text>;
+  if (isError) return <Text>Error: {error?.message}</Text>;
+  if (!data) return <Text>No data found</Text>;
+
   return (
     <View style={styles.container}>
       <View style={styles.contentWrapper}>
         <Text style={styles.title}>New Transactions</Text>
       </View>
-      <View style={styles.balanceSection}>
-        <Text style={styles.balanceTitle}>Your Balance</Text>
-        <View style={styles.balanceCard}>
-          <View style={styles.contentWrapper}>
-            <UserProfileBalanceData />
-          </View>
-        </View>
+
+      <View style={styles.BalanceContainer}>
+        <UserProfileBalanceV2 balance={data.balance} />
       </View>
       <View style={styles.pickerContainer}>
-        <View style={styles.contentWrapper}>
+        <View style={styles.dropdownContainer}>
           <TransactionTypePicker
             value={value}
             setValue={setValue}
@@ -68,7 +80,6 @@ const OwnTransactions = () => {
           />
         </View>
       </View>
-
       <View style={styles.contentWrapper}>
         {value && (
           <TouchableOpacity style={styles.button} onPress={handleContinue}>
@@ -120,74 +131,75 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0d0d0d",
-    padding: 24,
-    justifyContent: "space-between",
-    alignItems: "center", // ✅ Center everything horizontally
+    paddingHorizontal: 24,
+    paddingTop: 40,
   },
   contentWrapper: {
     width: "100%",
-    maxWidth: 500, // ✅ Limits horizontal stretch on tablets or web
+    maxWidth: 500,
+    alignSelf: "center",
   },
   title: {
-    fontSize: 30,
-    fontWeight: "900",
+    fontSize: 28,
+    fontWeight: "bold",
     color: "#ffffff",
     textAlign: "center",
-    marginVertical: 16,
-    letterSpacing: 1,
-  },
-  pickerContainer: {
-    width: screenWidth * 0.9,
-    alignSelf: "center",
-    marginVertical: 24,
-  },
-  button: {
-    backgroundColor: "#3a86ff",
-    borderRadius: 12,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: "center",
-    alignSelf: "center",
-    marginTop: 12,
-    shadowColor: "#3a86ff",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontWeight: "600",
-    textTransform: "capitalize",
+    marginBottom: 24,
+    letterSpacing: 0.5,
   },
   balanceSection: {
-    width: "100%",
-    marginTop: 12,
+    marginBottom: 24,
   },
-
   balanceTitle: {
-    color: "#bbbbbb",
-    fontSize: 16,
+    color: "#888888",
+    fontSize: 14,
     fontWeight: "500",
     marginBottom: 6,
     textTransform: "uppercase",
     letterSpacing: 1,
     paddingLeft: 4,
   },
-
   balanceCard: {
     backgroundColor: "#1a1a1a",
-    borderRadius: 20,
-    paddingVertical: 32,
-    paddingHorizontal: 24,
-    marginBottom: 32,
+    borderRadius: 16,
+    paddingVertical: 24,
+    paddingHorizontal: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 10,
+    shadowRadius: 10,
+    elevation: 6,
     borderWidth: 1,
     borderColor: "#2c2c2c",
+  },
+  pickerContainer: {
+    marginBottom: 32,
+    marginHorizontal: 16,
+  },
+  button: {
+    backgroundColor: "#3a86ff",
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    shadowColor: "#3a86ff",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 4,
+    marginTop: 10,
+    marginHorizontal: 16,
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "600",
+    textTransform: "capitalize",
+  },
+  BalanceContainer: {
+    marginBottom: 24,
+  },
+  dropdownContainer: {
+    marginHorizontal: 30,
   },
 });
