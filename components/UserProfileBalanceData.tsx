@@ -1,14 +1,25 @@
 // UserProfile.tsx
-import { GetProfile } from "@/api/services";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { Text, View } from "react-native";
+
+import { useFetchUserProfileData } from "@/hooks/useUserProfileData";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback } from "react";
+import { StyleSheet, Text, View } from "react-native";
+
+type BalanceCardProps = {
+  amount: number;
+  currency?: string;
+};
 
 const UserProfileBalanceData: React.FC = () => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["userProfile"],
-    queryFn: GetProfile,
-  });
+  const { data, isLoading, isError, error, refetch } =
+    useFetchUserProfileData();
+
+  //refetch upon screen focus
+  useFocusEffect(
+    useCallback(() => {
+      refetch(); // ensures fresh data on screen focus
+    }, [])
+  );
 
   if (isLoading) return <Text>Loading...</Text>;
   if (isError) return <Text>Error: {error?.message}</Text>;
@@ -17,9 +28,20 @@ const UserProfileBalanceData: React.FC = () => {
   // pass profile data down
   return (
     <View>
-      <Text>Balance: {data.balance}</Text>
+      <Text style={styles.BalanceFont}>
+        {data.balance.toLocaleString()} KWD
+      </Text>
     </View>
   );
 };
 
 export default UserProfileBalanceData;
+
+const styles = StyleSheet.create({
+  BalanceFont: {
+    fontSize: 36,
+    fontWeight: "light",
+    color: "#ffffff",
+    letterSpacing: 1.2,
+  },
+});

@@ -2,6 +2,7 @@ import AuthContext from "@/context/AuthContext";
 import { Redirect } from "expo-router";
 import { useContext, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
+import "react-native-reanimated";
 
 export default function Index() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);

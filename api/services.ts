@@ -1,5 +1,4 @@
 /// manage all services endpoints with the BE
-import { useQuery } from "@tanstack/react-query";
 import { instance } from ".";
 
 ////////// "Get your Profile" API
@@ -30,27 +29,40 @@ const UpdateProfile = async () => {
 
 ////// "Deposit to your account"
 
-const DepositToAccount = async (amount:number) => {
-  const responce = await instance.put("/mini-project/api/transactions/deposit");
-  return responce.data;
+const DepositToAccount = async (amount: number) => {
+  const response = await instance.put(
+    "/mini-project/api/transactions/deposit",
+    {
+      amount: amount, //backend required data
+    }
+  );
+
+  return response.data;
 };
 
 ////// "Withdraw from your account"
 
-const WithdrawFromoAccount = async (amount:number) => {
-  const responce = await instance.put(
-    "/mini-project/api/transactions/withdraw"
+const WithdrawFromoAccount = async (amount: number) => {
+  const response = await instance.put(
+    "/mini-project/api/transactions/withdraw",
+    {
+      amount: amount, ////backend required data
+    }
   );
-  return responce.data;
+  return response.data;
 };
 
 //////// Transfer to another user from my account
 
-const TransferfromMYAcc = async (amount:number, username:string) => {
-  const responce = await instance.put(
-    "/mini-project/api/transactions/transfer/<username>"
+const TransferToBeneficiary = async (amountinput: number, username: string) => {
+  const response = await instance.put(
+    "/mini-project/api/transactions/transfer/<username>",
+    {
+      amount: amountinput,
+      username: username,
+    }
   );
-  return responce.data;
+  return response.data;
 };
 
 ////// Get User Info by user ID
@@ -59,15 +71,13 @@ const GetUserInfo = async (userId: number) => {
   return responce.data;
 };
 
-
-
 export {
   DepositToAccount,
   GetAllUsers,
   GetProfile,
   GetTransactions,
   GetUserInfo,
-  TransferfromMYAcc,
+  TransferToBeneficiary,
   UpdateProfile,
   WithdrawFromoAccount,
 };
