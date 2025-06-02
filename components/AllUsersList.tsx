@@ -1,6 +1,6 @@
 import { useAllUsersData } from "@/hooks/useAllUsersData";
 import { UserProfileDataType } from "@/types/UserProfileDataType";
-import React from "react";
+import React, { useRef } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -10,6 +10,9 @@ import {
 } from "react-native";
 
 const AllUsersList = () => {
+  //scroll to top
+  const flatListRef = useRef<FlatList>(null);
+
   const { data, isLoading, error } = useAllUsersData();
 
   if (isLoading) return <ActivityIndicator size="large" color="blue" />;
@@ -25,7 +28,6 @@ const AllUsersList = () => {
       <Text style={styles.username}>{item.username}</Text>
     </View>
   );
-
   return (
     <FlatList
       data={data}
@@ -69,5 +71,13 @@ const styles = StyleSheet.create({
     color: "#aaa", // light text
     textAlign: "center",
     backgroundColor: "#0d0d0d",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#ffffff",
+    textAlign: "center",
+    marginBottom: 24,
+    letterSpacing: 0.5,
   },
 });
